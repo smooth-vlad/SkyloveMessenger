@@ -39,7 +39,7 @@ abstract class MessengerDatabase : RoomDatabase() {
                 context,
                 MessengerDatabase::class.java,
                 DB_NAME
-            ).allowMainThreadQueries().build()
+            ).build()
         }
     }
 }

@@ -1,25 +1,27 @@
 package com.android.skylovemessenger.view.chat
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.db.MessengerDatabase
+import com.android.skylovemessenger.view.user_chats.UserChatsViewModel
+import com.android.skylovemessenger.view.user_chats.UserChatsViewModelFactory
 
 private const val TAG = "ChatFragment"
 
 class ChatFragment : Fragment() {
 
     private var columnCount = 1
-    private var chatId: Long = 0
+
+    private lateinit var viewModel: ChatViewModel
 
     private val args: ChatFragmentArgs by navArgs()
 
@@ -29,23 +31,22 @@ class ChatFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.chat_fragment, container, false)
 
-        chatId = args.chatId
+        val rv = view.findViewById(R.id.messages_list) as RecyclerView
 
-        val db = MessengerDatabase.getInstance(requireContext())
-        db?.let {
-            val messages = it.messageDao().getAllFor(chatId)
+        val db = MessengerDatabase.getInstance(requireContext())!!
+        val viewModelFactory = ChatViewModelFactory(1, args.chatId, db)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ChatViewModel::class.java)
 
-            // Set the adapter
-            if (view is RecyclerView) {
-                with(view) {
-                    layoutManager = when {
-                        columnCount <= 1 -> LinearLayoutManager(context)
-                        else -> GridLayoutManager(context, columnCount)
-                    }
-                    adapter = ChatRecyclerViewAdapter(messages)
+        viewModel.messages.observe(viewLifecycleOwner) {
+            with(rv) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
                 }
+                adapter = ChatRecyclerViewAdapter(it)
             }
         }
+
         return view
     }
 }

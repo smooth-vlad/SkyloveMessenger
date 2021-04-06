@@ -1,5 +1,6 @@
 package com.android.skylovemessenger.db.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,10 +12,10 @@ import java.time.LocalDateTime
 @Dao
 interface MessageDao {
     @Query("SELECT * FROM message")
-    fun getAll(): List<Message>
+    fun getAll(): LiveData<List<Message>>
 
     @Query("SELECT * FROM message WHERE chatId = :chatId")
-    fun getAllFor(chatId: Long): List<MessageDescription>
+    fun getAllFor(chatId: Long): LiveData<List<MessageDescription>>
 
     @Insert
     fun insert(message: Message)

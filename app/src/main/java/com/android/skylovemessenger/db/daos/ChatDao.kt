@@ -1,5 +1,6 @@
 package com.android.skylovemessenger.db.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,7 +12,7 @@ import com.android.skylovemessenger.db.entities.User
 @Dao
 interface ChatDao {
     @Query("SELECT * FROM chat")
-    fun getAll(): List<Chat>
+    fun getAll(): LiveData<List<Chat>>
 
     @Query("""
         SELECT CD.chatId, userId, messageId as lastMessageId
@@ -28,7 +29,7 @@ interface ChatDao {
                 ORDER BY dateTime DESC
                 LIMIT 1) M ON CD.chatId = M.chatId
         """)
-    fun getAllDescriptionsFor(userId: Int): List<ChatDescription>
+    fun getAllDescriptionsFor(userId: Int): LiveData<List<ChatDescription>>
 
     @Insert
     fun insert(chat: Chat)
