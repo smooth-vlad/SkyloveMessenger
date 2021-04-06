@@ -13,7 +13,7 @@ interface ChatDao {
     fun getAll(): List<Chat>
 
     @Query("""
-        SELECT userId, messageId as lastMessageId
+        SELECT CD.chatId, userId, messageId as lastMessageId
         FROM (
             SELECT
                 chatId,

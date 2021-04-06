@@ -7,6 +7,7 @@ import com.android.skylovemessenger.db.entities.Message
 import com.android.skylovemessenger.db.entities.User
 
 data class ChatDescription(
+    val chatId: Long,
     val userId: Long,
     @Relation(parentColumn = "userId", entityColumn = "userId")
     val user: User,

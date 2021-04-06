@@ -1,6 +1,5 @@
 package com.android.skylovemessenger.view.user_chats
 
-import android.media.Image
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,13 +14,13 @@ import com.android.skylovemessenger.db.ChatDescription
 import java.time.format.DateTimeFormatter
 
 class UserChatsRecyclerViewAdapter(
-    private val values: List<ChatDescription>
+    private val values: List<ChatDescription>, private val onChatClickListener: OnChatClickListener
 ) : RecyclerView.Adapter<UserChatsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.chat_item, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, onChatClickListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,8 +31,7 @@ class UserChatsRecyclerViewAdapter(
         if (item.message != null) {
             holder.lastMessageText.text = item.message.text
             holder.date.text = item.message.dateTime.format(DateTimeFormatter.ofPattern("hh:mm"))
-        }
-        else {
+        } else {
             holder.lastMessageText.text = "Начните беседу первым!"
             holder.date.text = ""
         }
@@ -41,10 +39,24 @@ class UserChatsRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View, private val onChatClickListener: OnChatClickListener) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
         val name: TextView = view.findViewById(R.id.user)
         val photo: ImageView = view.findViewById(R.id.photo)
         val lastMessageText: TextView = view.findViewById(R.id.text)
         val date: TextView = view.findViewById(R.id.date)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            onChatClickListener.onChatClick(adapterPosition)
+        }
+
+    }
+
+    interface OnChatClickListener {
+        fun onChatClick(position: Int)
     }
 }

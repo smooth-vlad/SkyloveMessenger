@@ -16,14 +16,8 @@ import java.time.Instant
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<UserChatsFragment>(R.id.fragment_container_view)
-        }
     }
 }
