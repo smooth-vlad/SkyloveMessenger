@@ -18,7 +18,7 @@ interface MessageDao {
     fun getAllFor(chatId: Long): LiveData<List<MessageDescription>>
 
     @Insert
-    fun insert(message: Message)
+    suspend fun insert(message: Message)
 }
 
 data class MessageDescription(

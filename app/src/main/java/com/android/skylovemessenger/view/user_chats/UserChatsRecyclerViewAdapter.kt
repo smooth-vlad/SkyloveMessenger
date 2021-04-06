@@ -43,7 +43,7 @@ class UserChatsRecyclerViewAdapter(
         RecyclerView.ViewHolder(view), View.OnClickListener {
         val name: TextView = view.findViewById(R.id.user)
         val photo: ImageView = view.findViewById(R.id.photo)
-        val lastMessageText: TextView = view.findViewById(R.id.text)
+        val lastMessageText: TextView = view.findViewById(R.id.message_text)
         val date: TextView = view.findViewById(R.id.date)
 
         init {

@@ -32,7 +32,7 @@ interface ChatDao {
     fun getAllDescriptionsFor(userId: Int): LiveData<List<ChatDescription>>
 
     @Insert
-    fun insert(chat: Chat)
+    suspend fun insert(chat: Chat)
 }
 
 data class ChatDescription(

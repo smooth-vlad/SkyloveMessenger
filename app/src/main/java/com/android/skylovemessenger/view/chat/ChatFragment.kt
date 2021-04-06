@@ -1,19 +1,23 @@
 package com.android.skylovemessenger.view.chat
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.db.MessengerDatabase
-import com.android.skylovemessenger.view.user_chats.UserChatsViewModel
-import com.android.skylovemessenger.view.user_chats.UserChatsViewModelFactory
+import kotlinx.coroutines.launch
 
 private const val TAG = "ChatFragment"
 
@@ -25,6 +29,7 @@ class ChatFragment : Fragment() {
 
     private val args: ChatFragmentArgs by navArgs()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +37,8 @@ class ChatFragment : Fragment() {
         val view = inflater.inflate(R.layout.chat_fragment, container, false)
 
         val rv = view.findViewById(R.id.messages_list) as RecyclerView
+        val sendButton = view.findViewById(R.id.send_button) as Button
+        val messageText = view.findViewById(R.id.input_message_text) as EditText
 
         val db = MessengerDatabase.getInstance(requireContext())!!
         val viewModelFactory = ChatViewModelFactory(1, args.chatId, db)
@@ -45,6 +52,10 @@ class ChatFragment : Fragment() {
                 }
                 adapter = ChatRecyclerViewAdapter(it)
             }
+        }
+
+        sendButton.setOnClickListener {
+            viewModel.sendMessage(messageText.text.toString())
         }
 
         return view
