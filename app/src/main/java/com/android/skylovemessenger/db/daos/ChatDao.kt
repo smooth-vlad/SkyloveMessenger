@@ -3,8 +3,9 @@ package com.android.skylovemessenger.db.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.android.skylovemessenger.db.ChatDescription
+import androidx.room.Relation
 import com.android.skylovemessenger.db.entities.Chat
+import com.android.skylovemessenger.db.entities.Message
 import com.android.skylovemessenger.db.entities.User
 
 @Dao
@@ -32,3 +33,13 @@ interface ChatDao {
     @Insert
     fun insert(chat: Chat)
 }
+
+data class ChatDescription(
+    val chatId: Long,
+    val userId: Long,
+    @Relation(parentColumn = "userId", entityColumn = "userId")
+    val user: User,
+    val lastMessageId: Long,
+    @Relation(parentColumn = "lastMessageId", entityColumn = "messageId")
+    val message: Message?,
+)

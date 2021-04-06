@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.android.skylovemessenger.R
-import com.android.skylovemessenger.view.chat.dummy.DummyContent
+import com.android.skylovemessenger.db.MessengerDatabase
 
 private const val TAG = "ChatFragment"
 
@@ -31,16 +31,19 @@ class ChatFragment : Fragment() {
 
         chatId = args.chatId
 
-        Toast.makeText(context, "$chatId", Toast.LENGTH_SHORT).show()
+        val db = MessengerDatabase.getInstance(requireContext())
+        db?.let {
+            val messages = it.messageDao().getAllFor(chatId)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
+            // Set the adapter
+            if (view is RecyclerView) {
+                with(view) {
+                    layoutManager = when {
+                        columnCount <= 1 -> LinearLayoutManager(context)
+                        else -> GridLayoutManager(context, columnCount)
+                    }
+                    adapter = ChatRecyclerViewAdapter(messages)
                 }
-                adapter = ChatRecyclerViewAdapter(DummyContent.ITEMS)
             }
         }
         return view

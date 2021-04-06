@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.android.skylovemessenger.R
-import com.android.skylovemessenger.db.ChatDescription
+import com.android.skylovemessenger.db.daos.ChatDescription
 
 import java.time.format.DateTimeFormatter
 

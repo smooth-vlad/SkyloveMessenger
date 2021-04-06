@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.android.skylovemessenger.R
-import com.android.skylovemessenger.db.ChatDescription
 import com.android.skylovemessenger.db.MessengerDatabase
+import com.android.skylovemessenger.db.daos.ChatDescription
 
 private const val TAG = "UserChatsFragment"
 
