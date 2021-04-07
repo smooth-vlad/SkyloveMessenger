@@ -95,15 +95,15 @@ class ChatRecyclerViewAdapter(
         }
 
         override fun onClick(v: View?) {
-            val position = adapterPosition
+            val item = values[adapterPosition]
             onMessageClickListener.onMessageCLick(
-                if (thisUserId == values[position].authorId) thisUserMessage else otherUserMessage,
-                position
+                if (thisUserId == item.authorId) thisUserMessage else otherUserMessage,
+                item.messageId
             )
         }
     }
 
     interface OnMessageClickListener {
-        fun onMessageCLick(v: View, position: Int)
+        fun onMessageCLick(v: View, messageId: Long)
     }
 }

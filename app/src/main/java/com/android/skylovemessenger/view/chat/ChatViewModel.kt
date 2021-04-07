@@ -36,6 +36,12 @@ class ChatViewModel(
         }
     }
 
+    fun delete(messageId: Long) {
+        viewModelScope.launch {
+            db.messageDao().delete(messageId)
+        }
+    }
+
     @delegate:Transient
     private val callBacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
 

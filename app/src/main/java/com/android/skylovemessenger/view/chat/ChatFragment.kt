@@ -51,13 +51,14 @@ class ChatFragment : Fragment(), ChatRecyclerViewAdapter.OnMessageClickListener 
         return binding.root
     }
 
-    override fun onMessageCLick(v: View, position: Int) {
+    override fun onMessageCLick(v: View, messageId: Long) {
         val popup = PopupMenu(context, v)
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.message_context_menu, popup.menu)
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
+                    viewModel.delete(messageId)
                     true
                 }
                 else -> false

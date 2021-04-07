@@ -1,10 +1,7 @@
 package com.android.skylovemessenger.db.daos
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Relation
+import androidx.room.*
 import com.android.skylovemessenger.db.entities.Message
 import com.android.skylovemessenger.db.entities.User
 import java.time.LocalDateTime
@@ -19,6 +16,9 @@ interface MessageDao {
 
     @Insert
     suspend fun insert(message: Message)
+
+    @Query("DELETE FROM message WHERE messageId = :messageId")
+    suspend fun delete(messageId: Long)
 }
 
 data class MessageDescription(
