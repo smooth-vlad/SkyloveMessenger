@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    tools:context=".view.user_chats.UserChatsFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chats_list"
-        android:name="com.android.skylovemessenger.view.user_chats.UserChatsFragment"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.android.skylovemessenger.view.user_chats.UserChatsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/chat_item" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_margin="8dp"
+        tools:context=".view.user_chats.UserChatsFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chats_list"
+            android:name="com.android.skylovemessenger.view.user_chats.UserChatsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/chat_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.android.skylovemessenger.R
+import com.android.skylovemessenger.databinding.UserChatsFragmentBinding
 import com.android.skylovemessenger.db.MessengerDatabase
 import com.android.skylovemessenger.db.daos.ChatDescription
 
@@ -26,14 +28,18 @@ class UserChatsFragment : Fragment(), UserChatsRecyclerViewAdapter.OnChatClickLi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.user_chats_fragment, container, false)
+    ): View {
+        val binding: UserChatsFragmentBinding =
+            DataBindingUtil.inflate(inflater, R.layout.user_chats_fragment, container, false)
 
-        val rv = view.findViewById(R.id.chats_list) as RecyclerView
+        val rv = binding.chatsList
 
         val db = MessengerDatabase.getInstance(requireContext())!!
         val viewModelFactory = UserChatsViewModelFactory(1, db)
         viewModel = ViewModelProvider(this, viewModelFactory).get(UserChatsViewModel::class.java)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         viewModel.descriptions.observe(viewLifecycleOwner) {
             rv.layoutManager = when {
@@ -43,7 +49,7 @@ class UserChatsFragment : Fragment(), UserChatsRecyclerViewAdapter.OnChatClickLi
             rv.adapter = UserChatsRecyclerViewAdapter(it, this)
         }
 
-        return view
+        return binding.root
     }
 
     override fun onChatClick(position: Int) {
