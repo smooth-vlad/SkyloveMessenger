@@ -20,8 +20,6 @@ private const val TAG = "ChatFragment"
 
 class ChatFragment : Fragment() {
 
-    private var columnCount = 1
-
     private lateinit var viewModel: ChatViewModel
 
     private val args: ChatFragmentArgs by navArgs()
@@ -45,11 +43,9 @@ class ChatFragment : Fragment() {
 
         viewModel.messages.observe(viewLifecycleOwner) {
             with(rv) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
+                layoutManager = LinearLayoutManager(context)
                 adapter = ChatRecyclerViewAdapter(it)
+                (layoutManager as LinearLayoutManager).stackFromEnd = true
             }
         }
 

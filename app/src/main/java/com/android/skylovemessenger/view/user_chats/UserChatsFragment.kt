@@ -25,8 +25,6 @@ class UserChatsFragment : Fragment(), UserChatsRecyclerViewAdapter.OnChatClickLi
 
     private val args: UserChatsFragmentArgs by navArgs()
 
-    private var columnCount = 1
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,10 +42,7 @@ class UserChatsFragment : Fragment(), UserChatsRecyclerViewAdapter.OnChatClickLi
         binding.viewModel = viewModel
 
         viewModel.descriptions.observe(viewLifecycleOwner) {
-            rv.layoutManager = when {
-                columnCount <= 1 -> LinearLayoutManager(context)
-                else -> GridLayoutManager(context, columnCount)
-            }
+            rv.layoutManager = LinearLayoutManager(context)
             rv.adapter = UserChatsRecyclerViewAdapter(it, this)
         }
 
