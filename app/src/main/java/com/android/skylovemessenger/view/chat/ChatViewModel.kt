@@ -14,7 +14,7 @@ import java.lang.IllegalArgumentException
 import java.time.LocalDateTime
 
 class ChatViewModel(
-    private val currentUserId: Long,
+    val currentUserId: Long,
     private val chatId: Long,
     private val db: MessengerDatabase
 ) : ViewModel(), Observable {

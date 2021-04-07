@@ -44,7 +44,7 @@ class ChatFragment : Fragment() {
         viewModel.messages.observe(viewLifecycleOwner) {
             with(rv) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = ChatRecyclerViewAdapter(it)
+                adapter = ChatRecyclerViewAdapter(it, viewModel.currentUserId)
                 (layoutManager as LinearLayoutManager).stackFromEnd = true
             }
         }

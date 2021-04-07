@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.android.skylovemessenger.view.chat.ChatViewModel" />
@@ -25,8 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/chat_message_item"
-            />
+            tools:listitem="@layout/chat_message_item" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/message_form"
@@ -51,11 +51,11 @@
                 android:id="@+id/send_button"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
+                android:onClick="@{() -> viewModel.sendMessage()}"
                 android:text=">"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{() -> viewModel.sendMessage()}"/>
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
