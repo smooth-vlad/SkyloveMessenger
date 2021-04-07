@@ -8,6 +8,7 @@ import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.*
 import com.android.skylovemessenger.BR
 import com.android.skylovemessenger.db.MessengerDatabase
+import com.android.skylovemessenger.db.entities.DeletedMessage
 import com.android.skylovemessenger.db.entities.Message
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
@@ -18,7 +19,7 @@ class ChatViewModel(
     private val chatId: Long,
     private val db: MessengerDatabase
 ) : ViewModel(), Observable {
-    val messages = db.messageDao().getAllFor(chatId)
+    val messages = db.messageDao().getAllFor(chatId, currentUserId)
 
     @get:Bindable
     var messageText = "hey"
@@ -42,6 +43,12 @@ class ChatViewModel(
         }
     }
 
+    fun deleteForThisUser(messageId: Long) {
+        viewModelScope.launch {
+            db.deletedMessageDao().insert(DeletedMessage(0, messageId, currentUserId))
+        }
+    }
+
     @delegate:Transient
     private val callBacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
 
@@ -57,7 +64,7 @@ class ChatViewModel(
         callBacks.notifyChange(this, 0)
     }
 
-    fun notifyChange(viewId:Int){
+    fun notifyChange(viewId: Int) {
         callBacks.notifyChange(this, viewId)
     }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SkyloveMessenger</string>
-    <string name="delete">Удалить</string>
+    <string name="message_delete_for_user">Удалить</string>
+    <string name="message_delete_for_everyone">Удалить для всех</string>
 </resources>

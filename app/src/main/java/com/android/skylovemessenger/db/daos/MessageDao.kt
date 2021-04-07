@@ -11,8 +11,20 @@ interface MessageDao {
     @Query("SELECT * FROM message")
     fun getAll(): LiveData<List<Message>>
 
-    @Query("SELECT * FROM message WHERE chatId = :chatId")
-    fun getAllFor(chatId: Long): LiveData<List<MessageDescription>>
+    @Transaction
+    @Query(
+        """
+        SELECT M.messageId, authorId, dateTime, chatId, isDeletedForAuthor, text FROM 
+            (SELECT *
+            FROM message
+            WHERE chatId = :chatId) M LEFT OUTER JOIN (
+                SELECT *
+                FROM deletedmessage
+                WHERE forUserId = :userId) DM ON DM.messageId = M.messageId
+                WHERE DM.deletedMessageId IS NULL
+        """
+    )
+    fun getAllFor(chatId: Long, userId: Long): LiveData<List<MessageDescription>>
 
     @Insert
     suspend fun insert(message: Message)

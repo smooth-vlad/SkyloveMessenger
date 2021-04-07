@@ -12,6 +12,8 @@ import com.android.skylovemessenger.db.entities.Chat
 import com.android.skylovemessenger.db.entities.Message
 import com.android.skylovemessenger.db.entities.User
 import com.android.skylovemessenger.view.user_chats.UserChatsFragment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.*
 

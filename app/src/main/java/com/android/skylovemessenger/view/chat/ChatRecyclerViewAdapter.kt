@@ -1,6 +1,7 @@
 package com.android.skylovemessenger.view.chat
 
 import android.os.Build
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -96,6 +97,7 @@ class ChatRecyclerViewAdapter(
 
         override fun onClick(v: View?) {
             val item = values[adapterPosition]
+            Log.d("abc123", "onClick: ${item.messageId}")
             onMessageClickListener.onMessageCLick(
                 if (thisUserId == item.authorId) thisUserMessage else otherUserMessage,
                 item.messageId

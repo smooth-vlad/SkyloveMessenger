@@ -57,8 +57,12 @@ class ChatFragment : Fragment(), ChatRecyclerViewAdapter.OnMessageClickListener 
         inflater.inflate(R.menu.message_context_menu, popup.menu)
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.delete -> {
+                R.id.delete_for_everyone -> {
                     viewModel.delete(messageId)
+                    true
+                }
+                R.id.delete -> {
+                    viewModel.deleteForThisUser(messageId)
                     true
                 }
                 else -> false
