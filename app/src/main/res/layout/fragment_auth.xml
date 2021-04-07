@@ -25,7 +25,7 @@
             android:id="@+id/auth_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Auth"
+            android:text="@string/auth"
             android:layout_margin="16dp"/>
 
     </LinearLayout>

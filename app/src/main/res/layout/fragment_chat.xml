@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@={viewModel.messageText}"
-
+                android:hint="@string/message_enter_hint"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/send_button"
                 app:layout_constraintStart_toStartOf="parent"
