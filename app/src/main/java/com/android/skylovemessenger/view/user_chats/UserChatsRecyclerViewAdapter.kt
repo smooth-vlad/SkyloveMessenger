@@ -30,7 +30,7 @@ class UserChatsRecyclerViewAdapter(
         holder.name.text = item.user.name
         if (item.message != null) {
             holder.lastMessageText.text = item.message.text
-            holder.date.text = item.message.dateTime.format(DateTimeFormatter.ofPattern("hh:mm"))
+            holder.date.text = item.message.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
         } else {
             holder.lastMessageText.text = "Начните беседу первым!"
             holder.date.text = ""

@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.skylovemessenger.db.MessengerDatabase
 import java.lang.IllegalArgumentException
 
-class UserChatsViewModel(private val currentUserId: Int, private val db: MessengerDatabase) :
+class UserChatsViewModel(val currentUserId: Long, private val db: MessengerDatabase) :
     ViewModel() {
     val descriptions = db.chatDao().getAllDescriptionsFor(currentUserId)
 }
 
-class UserChatsViewModelFactory(private val currentUserId: Int, private val db: MessengerDatabase) :
+class UserChatsViewModelFactory(
+    private val currentUserId: Long,
+    private val db: MessengerDatabase
+) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserChatsViewModel::class.java))

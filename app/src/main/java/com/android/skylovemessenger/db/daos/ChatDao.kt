@@ -14,22 +14,23 @@ interface ChatDao {
     @Query("SELECT * FROM chat")
     fun getAll(): LiveData<List<Chat>>
 
-    @Query("""
-        SELECT CD.chatId, userId, messageId as lastMessageId
+    @Query(
+        """
+        SELECT CD.chatId, userId, MAX(messageId) as lastMessageId
         FROM (
             SELECT
-                chatId,
-                CASE
-                    WHEN user1Id = :userId THEN user2Id
-                    WHEN user2Id = :userId THEN user1Id
-                END AS userId
+            chatId,
+            CASE
+                WHEN user1Id = :userId THEN user2Id
+                WHEN user2Id = :userId THEN user1Id
+            END AS userId
             FROM chat
-            WHERE user1Id = :userId OR user2Id = :userId ) CD LEFT JOIN (
-                SELECT * FROM message
-                ORDER BY dateTime DESC
-                LIMIT 1) M ON CD.chatId = M.chatId
-        """)
-    fun getAllDescriptionsFor(userId: Int): LiveData<List<ChatDescription>>
+            WHERE user1Id = :userId OR user2Id = :userId) CD LEFT JOIN (
+                SELECT * FROM message) M ON CD.chatId = M.chatId 
+        GROUP BY CD.chatId
+        """
+    )
+    fun getAllDescriptionsFor(userId: Long): LiveData<List<ChatDescription>>
 
     @Insert
     suspend fun insert(chat: Chat)
