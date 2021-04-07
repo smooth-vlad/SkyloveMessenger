@@ -1,23 +1,24 @@
 package com.android.skylovemessenger.view.auth
 
-import android.R.attr.data
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.databinding.FragmentAuthBinding
 import com.android.skylovemessenger.db.MessengerDatabase
+import com.android.skylovemessenger.db.entities.Chat
 import com.android.skylovemessenger.db.entities.User
-import com.android.skylovemessenger.view.user_chats.UserChatsViewModelFactory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 
 private const val TAG = "AuthFragment"
@@ -50,7 +51,16 @@ class AuthFragment : Fragment() {
 
         viewModel.users.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
-                viewModel.create3Users()
+                GlobalScope.launch {
+                    db.userDao()
+                        .insert(
+                            User(0, "vladOS", getByteArrayFromDrawable(R.drawable._36_man))
+                        )
+                    db.userDao()
+                        .insert(User(0, "mary_s", getByteArrayFromDrawable(R.drawable._47_woman)))
+                    db.userDao()
+                        .insert(User(0, "van4el", getByteArrayFromDrawable(R.drawable._42_man)))
+                }
             }
         }
 
@@ -75,5 +85,12 @@ class AuthFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun getByteArrayFromDrawable(drawableId: Int): ByteArray {
+        val bitmap1 = (resources.getDrawable(drawableId, null) as BitmapDrawable).bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap1.compress(Bitmap.CompressFormat.PNG, 25, stream)
+        return stream.toByteArray()
     }
 }

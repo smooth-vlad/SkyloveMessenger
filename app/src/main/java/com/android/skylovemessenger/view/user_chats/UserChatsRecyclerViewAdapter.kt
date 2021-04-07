@@ -1,17 +1,19 @@
 package com.android.skylovemessenger.view.user_chats
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.RecyclerView
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.db.daos.ChatDescription
-
 import java.time.format.DateTimeFormatter
+
 
 class UserChatsRecyclerViewAdapter(
     private val values: List<ChatDescription>, private val onChatClickListener: OnChatClickListener
@@ -35,6 +37,10 @@ class UserChatsRecyclerViewAdapter(
             holder.lastMessageText.text = "Начните беседу первым!"
             holder.date.text = ""
         }
+        item.user.photo?.let {
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            holder.photo.setImageBitmap(bmp)
+        }
     }
 
     override fun getItemCount(): Int = values.size
@@ -42,7 +48,7 @@ class UserChatsRecyclerViewAdapter(
     inner class ViewHolder(view: View, private val onChatClickListener: OnChatClickListener) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
         val name: TextView = view.findViewById(R.id.user)
-        val photo: ImageView = view.findViewById(R.id.photo)
+        var photo: ImageView = view.findViewById(R.id.photo)
         val lastMessageText: TextView = view.findViewById(R.id.message_text)
         val date: TextView = view.findViewById(R.id.date)
 
