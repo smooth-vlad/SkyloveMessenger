@@ -17,7 +17,7 @@
             android:id="@+id/this_user_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp">
+            android:layout_margin="2dp">
 
             <TextView
                 android:id="@+id/this_user_text"
@@ -35,6 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
+                android:layout_marginBottom="6dp"
                 app:layout_constraintEnd_toEndOf="@+id/this_user_text"
                 app:layout_constraintTop_toBottomOf="@+id/this_user_text"
                 tools:text="12:30" />
@@ -44,7 +45,7 @@
             android:id="@+id/other_user_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp">
+            android:layout_margin="2dp">
 
             <TextView
                 android:id="@+id/other_user_text"
@@ -62,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
+                android:layout_marginBottom="6dp"
                 app:layout_constraintStart_toStartOf="@+id/other_user_text"
                 app:layout_constraintTop_toBottomOf="@+id/other_user_text"
                 tools:text="12:30" />

@@ -11,6 +11,9 @@ import com.android.skylovemessenger.R
 import com.android.skylovemessenger.db.daos.MessageDescription
 import com.android.skylovemessenger.db.entities.Message
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
+import kotlin.math.abs
 
 
 class ChatRecyclerViewAdapter(
@@ -27,18 +30,44 @@ class ChatRecyclerViewAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
+
         when (item.authorId) {
             thisUserId -> {
                 holder.tut.text = item.text
                 holder.tud.text = item.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
                 holder.otherUserMessage.visibility = View.GONE
+
+                if (isDateSame(position, item))
+                    holder.tud.visibility = View.GONE
             }
             else -> {
                 holder.out.text = item.text
                 holder.oud.text = item.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
                 holder.thisUserMessage.visibility = View.GONE
+
+                if (isDateSame(position, item))
+                    holder.oud.visibility = View.GONE
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isDateSame(
+        position: Int,
+        item: MessageDescription
+    ): Boolean {
+        var isNeedToHideDate = false
+        if (position + 1 < values.size
+            && values[position + 1].authorId == item.authorId
+        ) {
+            val previousMessageDate =
+                values[position + 1].dateTime.truncatedTo(ChronoUnit.MINUTES)
+            val thisMessageDate = item.dateTime.truncatedTo(ChronoUnit.MINUTES)
+            if (abs(thisMessageDate.minute - previousMessageDate.minute) < 3) {
+                isNeedToHideDate = true
+            }
+        }
+        return isNeedToHideDate
     }
 
     override fun getItemCount(): Int = values.size
