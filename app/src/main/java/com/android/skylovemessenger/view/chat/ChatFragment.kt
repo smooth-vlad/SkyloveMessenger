@@ -2,11 +2,12 @@ package com.android.skylovemessenger.view.chat
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -18,7 +19,7 @@ import com.android.skylovemessenger.db.MessengerDatabase
 
 private const val TAG = "ChatFragment"
 
-class ChatFragment : Fragment() {
+class ChatFragment : Fragment(), ChatRecyclerViewAdapter.OnMessageClickListener {
 
     private lateinit var viewModel: ChatViewModel
 
@@ -42,13 +43,26 @@ class ChatFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.messages.observe(viewLifecycleOwner) {
-            with(rv) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = ChatRecyclerViewAdapter(it, viewModel.currentUserId)
-                (layoutManager as LinearLayoutManager).stackFromEnd = true
-            }
+            rv.layoutManager = LinearLayoutManager(context)
+            rv.adapter = ChatRecyclerViewAdapter(it, viewModel.currentUserId, this)
+            (rv.layoutManager as LinearLayoutManager).stackFromEnd = true
         }
 
         return binding.root
+    }
+
+    override fun onMessageCLick(v: View, position: Int) {
+        val popup = PopupMenu(context, v)
+        val inflater: MenuInflater = popup.menuInflater
+        inflater.inflate(R.menu.message_context_menu, popup.menu)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.delete -> {
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
     }
 }

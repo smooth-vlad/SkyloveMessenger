@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.findFragment
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.db.daos.MessageDescription
 import com.android.skylovemessenger.db.entities.Message
@@ -18,13 +19,21 @@ import kotlin.math.abs
 
 class ChatRecyclerViewAdapter(
     private val values: List<MessageDescription>,
-    private val thisUserId: Long
+    private val thisUserId: Long,
+    private val onMessageClickListener: OnMessageClickListener
 ) : RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder>() {
+
+    private var fragment: ChatFragment? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.chat_message_item, parent, false)
-        return ViewHolder(view)
+
+//        if (fragment == null)
+//            fragment = parent.findFragment<ChatFragment>()
+//        fragment?.registerForContextMenu(view)
+
+        return ViewHolder(view, onMessageClickListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -72,12 +81,29 @@ class ChatRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View, private val onMessageClickListener: OnMessageClickListener) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
         val tut: TextView = view.findViewById(R.id.this_user_text)
         val tud: TextView = view.findViewById(R.id.this_user_date)
         val thisUserMessage: View = view.findViewById(R.id.this_user_message)
         val out: TextView = view.findViewById(R.id.other_user_text)
         val oud: TextView = view.findViewById(R.id.other_user_date)
         val otherUserMessage: View = view.findViewById(R.id.other_user_message)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            onMessageClickListener.onMessageCLick(
+                if (thisUserId == values[position].authorId) thisUserMessage else otherUserMessage,
+                position
+            )
+        }
+    }
+
+    interface OnMessageClickListener {
+        fun onMessageCLick(v: View, position: Int)
     }
 }
