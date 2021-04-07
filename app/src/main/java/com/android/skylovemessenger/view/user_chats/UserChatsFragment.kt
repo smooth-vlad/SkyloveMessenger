@@ -15,7 +15,10 @@ import androidx.navigation.fragment.navArgs
 import com.android.skylovemessenger.R
 import com.android.skylovemessenger.databinding.FragmentUserChatsBinding
 import com.android.skylovemessenger.db.MessengerDatabase
+import com.android.skylovemessenger.db.entities.Chat
 import com.android.skylovemessenger.view.chat.ChatFragmentArgs
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 private const val TAG = "UserChatsFragment"
 
@@ -44,6 +47,19 @@ class UserChatsFragment : Fragment(), UserChatsRecyclerViewAdapter.OnChatClickLi
         viewModel.descriptions.observe(viewLifecycleOwner) {
             rv.layoutManager = LinearLayoutManager(context)
             rv.adapter = UserChatsRecyclerViewAdapter(it, this)
+        }
+
+        db.chatDao().getChatsFor(viewModel.currentUserId).observe(viewLifecycleOwner) { chatsOtherUsersIds ->
+            db.userDao().getAll().observe(viewLifecycleOwner) { users ->
+                GlobalScope.launch {
+                    for (user in users) {
+                        if (user.userId != viewModel.currentUserId
+                            && !chatsOtherUsersIds.contains(user.userId)) {
+                            db.chatDao().insert(Chat(0, viewModel.currentUserId, user.userId))
+                        }
+                    }
+                }
+            }
         }
 
         return binding.root

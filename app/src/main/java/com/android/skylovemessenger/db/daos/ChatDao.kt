@@ -38,6 +38,18 @@ interface ChatDao {
 
     @Insert
     suspend fun insert(chat: Chat)
+
+    @Query(
+        """
+            SELECT
+                CASE
+                WHEN user1Id = :userId THEN user2Id
+                WHEN user2Id = :userId THEN user1Id
+            END AS userId
+            FROM chat WHERE user1Id = :userId OR user2Id = :userId
+            """
+    )
+    fun getChatsFor(userId: Long): LiveData<List<Long>>
 }
 
 data class ChatDescription(
