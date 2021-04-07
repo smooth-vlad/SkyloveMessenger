@@ -14,7 +14,7 @@ interface MessageDao {
     @Transaction
     @Query(
         """
-        SELECT M.messageId, authorId, dateTime, chatId, isDeletedForAuthor, text FROM 
+        SELECT M.messageId, authorId, dateTime, chatId, text FROM 
             (SELECT *
             FROM message
             WHERE chatId = :chatId) M LEFT OUTER JOIN (
@@ -39,6 +39,5 @@ data class MessageDescription(
     @Relation(parentColumn = "authorId", entityColumn = "userId")
     val author: User,
     val dateTime: LocalDateTime,
-    val isDeletedForAuthor: Boolean,
     val text: String
 )

@@ -33,7 +33,7 @@ class ChatViewModel(
     fun sendMessage() {
         viewModelScope.launch {
             db.messageDao()
-                .insert(Message(0, currentUserId, LocalDateTime.now(), chatId, false, messageText))
+                .insert(Message(0, currentUserId, LocalDateTime.now(), chatId, messageText))
         }
     }
 

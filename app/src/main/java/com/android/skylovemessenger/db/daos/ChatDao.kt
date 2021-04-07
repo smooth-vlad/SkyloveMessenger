@@ -26,7 +26,11 @@ interface ChatDao {
             END AS userId
             FROM chat
             WHERE user1Id = :userId OR user2Id = :userId) CD LEFT JOIN (
-                SELECT * FROM message) M ON CD.chatId = M.chatId 
+                SELECT * FROM message LEFT OUTER JOIN (
+                    SELECT * FROM deletedmessage
+                    WHERE forUserId = :userId
+                ) DM ON message.messageId = DM.messageId
+                WHERE DM.messageId IS NULL) M ON CD.chatId = M.chatId 
         GROUP BY CD.chatId
         """
     )

@@ -13,6 +13,5 @@ data class Message(
     val authorId: Long,
     val dateTime: LocalDateTime,
     val chatId: Long,
-    val isDeletedForAuthor: Boolean,
     val text: String
 )
