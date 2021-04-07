@@ -49,6 +49,12 @@ class AuthFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.users.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                viewModel.create3Users()
+            }
+        }
+
+        viewModel.users.observe(viewLifecycleOwner) {
             users = it
             val adapter: ArrayAdapter<String> =
                 ArrayAdapter<String>(
